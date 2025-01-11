@@ -89,14 +89,16 @@ for ex = 1:nx
         Kq = 0;
         
         % Quadrilateral Elements
-        for gg = 1:4 % the four Gauss points
+        for gg = 1:4 % Four Gauss points
             xx = g(gg,1);
             yy = g(gg,2);
             Nxx = [-0.25*(1-yy), 0.25*(1-yy), -0.25*(1+yy), 0.25*(1+yy)];
             Nyy = [-0.25*(1-xx), -0.25*(1+xx), 0.25*(1-xx), 0.25*(1+xx)];
-            J = [Nxx*[x1;x2;x3;x4], Nxx*[y1;y2;y3;y4]; Nyy*[x1;x2;x3;x4], Nyy*[y1;y2;y3;y4]];
+            J = [Nxx*[x1;x2;x3;x4], Nxx*[y1;y2;y3;y4]; ...
+                Nyy*[x1;x2;x3;x4], Nyy*[y1;y2;y3;y4]];
             dJ = det(J);
-            A= (1/dJ)*([J(2,2) -1*J(1,2) 0 0; 0 0 -1*J(2,1) J(1,1); -1*J(2,1) J(1,1) J(2,2) -1*J(1,2)]);
+            A= (1/dJ)*([J(2,2) -1*J(1,2) 0 0; 0 0 -1*J(2,1) J(1,1); ...
+                -1*J(2,1) J(1,1) J(2,2) -1*J(1,2)]);
             G = [Nxx(1) 0 Nxx(2) 0 Nxx(3) 0 Nxx(4) 0;
                 Nyy(1) 0 Nyy(2) 0 Nyy(3) 0 Nyy(4) 0;
                 0 Nxx(1) 0 Nxx(2) 0 Nxx(3) 0 Nxx(4);
@@ -185,9 +187,7 @@ for ey = 1:ny
         v4 = u(2*(j+1),1);
         
         uv = [u1;v1;u2;v2;u3;v3;u4;v4];
-        % average strains and stresses in the element - from their values
-        % at the Gauss points
-        
+        % Average strains and stresses in the element 
         ev = 0;
         for gg = 1:4
             ev = ev+0.25*Bg(:,:,gg)*uv;
@@ -202,7 +202,10 @@ for ey = 1:ny
         svm(ey,ex) = sqrt(sv(ey,ex,1)^2+sv(ey,ex,2)^2-sv(ey,ex,1)*sv(ey,ex,2)+3*sv(ey,ex,3)^2);
         
         % Quad Plotting
-        if doesLineIntersectCircle(x1,y1,x2,y2,cx,cy,D)||         doesLineIntersectCircle(x1,y1,x3,y3,cx,cy,D)|| doesLineIntersectCircle(x2,y2,x4,y4,cx,cy,D)|| doesLineIntersectCircle(x3,y3,x4,y4,cx,cy,D)
+        if doesLineIntersectCircle(x1,y1,x2,y2,cx,cy,D)||...
+                doesLineIntersectCircle(x1,y1,x3,y3,cx,cy,D)||...
+                doesLineIntersectCircle(x2,y2,x4,y4,cx,cy,D)||...
+                doesLineIntersectCircle(x3,y3,x4,y4,cx,cy,D)
             continue;
         end
         
